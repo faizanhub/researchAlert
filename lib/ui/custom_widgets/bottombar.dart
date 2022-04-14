@@ -31,7 +31,11 @@ class CustomBottomBar extends StatelessWidget {
           InkWell(
             onTap: () {
               Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => AddTodo()));
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => AddTodo(
+                            value: '',
+                          )));
             },
             child: Container(
               padding: const EdgeInsets.all(10.0),

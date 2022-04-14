@@ -3,8 +3,11 @@
 import 'package:flutter/material.dart';
 
 class Product {
-  final String title, desc;
-  final Color color;
+  String title;
+
+  String desc;
+
+  Color color;
   Product({
     required this.title,
     required this.desc,
