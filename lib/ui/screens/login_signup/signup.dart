@@ -1,35 +1,37 @@
 import 'package:flutter/material.dart';
-import 'package:research_alert/firebase_services/database_services.dart';
-import 'package:research_alert/log_splash/forget_password.dart';
-import 'package:research_alert/log_splash/signup.dart';
-import 'package:research_alert/screens/home_screen.dart';
-import 'package:research_alert/widgets/button.dart';
-import 'package:research_alert/widgets/text_field.dart';
+import 'package:research_alert/core/services/auth_service.dart';
+import 'package:research_alert/ui/custom_widgets/button.dart';
+import 'package:research_alert/ui/custom_widgets/text_field.dart';
+import 'package:research_alert/ui/screens/login_signup/login.dart';
 
-class LoginPage extends StatefulWidget {
-  static const id = '/LoginPage';
-
-  LoginPage({Key? key}) : super(key: key);
+class MyRegister extends StatefulWidget {
+  const MyRegister({Key? key}) : super(key: key);
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<MyRegister> createState() => _MyRegisterState();
 }
 
-final formkey = GlobalKey<FormState>();
-bool formStateLoading = false;
+class _MyRegisterState extends State<MyRegister> {
+  AuthService _authService = AuthService();
 
-class _LoginPageState extends State<LoginPage> {
   TextEditingController emailC = TextEditingController();
+
   TextEditingController passwordC = TextEditingController();
 
+  TextEditingController confirmpasswordC = TextEditingController();
   FocusNode? passwordfocus;
+  FocusNode? confirmpasswordfocus;
+  final formkey = GlobalKey<FormState>();
 
   bool ispassword = true;
+  bool isconfirmpassword = true;
+  bool formStateLoading = false;
 
   @override
   void dispose() {
     emailC.dispose();
     passwordC.dispose();
+    confirmpasswordC.dispose();
     super.dispose();
   }
 
@@ -56,17 +58,18 @@ class _LoginPageState extends State<LoginPage> {
       setState(() {
         formStateLoading = true;
       });
-
-      String? accountstatus =
-          await Authentication.signInAccount(emailC.text, passwordC.text);
-      if (accountstatus != null) {
-        ecoDialogue(accountstatus);
-        setState(() {
-          formStateLoading = false;
-        });
-      } else {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (_) => const HomeScreen()));
+      if (passwordC.text == confirmpasswordC.text) {
+        String? accountstatus =
+            await _authService.createAccount(emailC.text, passwordC.text);
+        if (accountstatus != null) {
+          ecoDialogue(accountstatus);
+          setState(() {
+            formStateLoading = false;
+          });
+        } else {
+          Navigator.pop(context);
+        }
+        Navigator.push(context, MaterialPageRoute(builder: (_) => LoginPage()));
       }
     }
   }
@@ -80,20 +83,24 @@ class _LoginPageState extends State<LoginPage> {
       ),
       child: Scaffold(
         backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+        ),
         body: Stack(
           children: [
             Container(
-              padding: const EdgeInsets.only(left: 35, top: 120),
+              padding: const EdgeInsets.only(left: 35, top: 15),
               child: const Text(
-                'Welcome\nTo\nLogin Page',
-                style: TextStyle(color: Colors.white, fontSize: 30),
+                'Create\nAccount',
+                style: TextStyle(color: Colors.white, fontSize: 33),
               ),
             ),
             SingleChildScrollView(
               child: Container(
                 margin: const EdgeInsets.only(left: 35, right: 35),
                 padding: EdgeInsets.only(
-                    top: MediaQuery.of(context).size.height * 0.43),
+                    top: MediaQuery.of(context).size.height * 0.20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -103,13 +110,7 @@ class _LoginPageState extends State<LoginPage> {
                       child: Column(
                         children: [
                           TextFieldW(
-                            inputAction: TextInputAction.next,
-                            controller: emailC,
-                            hintText: "Email",
-                            icon: const Icon(
-                              Icons.email,
-                              color: Colors.white,
-                            ),
+                            check: true,
                             validate: (v) {
                               if (v!.isEmpty ||
                                   !v.contains("@") ||
@@ -118,11 +119,26 @@ class _LoginPageState extends State<LoginPage> {
                               }
                               return null;
                             },
+                            inputAction: TextInputAction.next,
+                            controller: emailC,
+                            hintText: "Email",
+                            icon: const Icon(
+                              Icons.email,
+                              color: Colors.white,
+                            ),
                           ),
                           const SizedBox(
-                            height: 45,
+                            height: 25,
                           ),
                           TextFieldW(
+                            validate: (v) {
+                              if (v!.isEmpty) {
+                                return "Password should not be empty";
+                              }
+                              return null;
+                            },
+                            focusNode: passwordfocus,
+                            inputAction: TextInputAction.next,
                             isPassword: ispassword,
                             controller: passwordC,
                             hintText: "Password",
@@ -137,59 +153,50 @@ class _LoginPageState extends State<LoginPage> {
                                   ? const Icon(Icons.visibility)
                                   : const Icon(Icons.visibility_off),
                             ),
+                          ),
+                          const SizedBox(
+                            height: 25,
+                          ),
+                          TextFieldW(
+                            isPassword: isconfirmpassword,
+                            controller: confirmpasswordC,
                             validate: (v) {
                               if (v!.isEmpty) {
                                 return "Password should not be empty";
                               }
                               return null;
                             },
+                            hintText: "ConfirmPassword",
+                            icon: IconButton(
+                              color: Colors.white,
+                              onPressed: () {
+                                setState(() {
+                                  isconfirmpassword = !isconfirmpassword;
+                                });
+                              },
+                              icon: ispassword
+                                  ? const Icon(Icons.visibility)
+                                  : const Icon(Icons.visibility_off),
+                            ),
                           ),
                           const SizedBox(
-                            height: 15,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 1, vertical: 10),
-                                child: InkWell(
-                                    onTap: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                const ForgetPassword(),
-                                          ));
-                                    },
-                                    child: const Text(
-                                      "Forgot Password ?",
-                                      style: TextStyle(
-                                          color: Color.fromARGB(
-                                              255, 247, 247, 248),
-                                          fontSize: 17,
-                                          fontWeight: FontWeight.bold),
-                                    )),
-                              )
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 10,
+                            height: 50,
                           ),
                           Buttonw(
-                            title: "LOGIN",
-                            isLoading: formStateLoading,
+                            title: "Sign Up",
+                            isLoginButton: true,
                             onPress: () {
                               submit();
                             },
+                            isLoading: formStateLoading,
                           ),
                           const SizedBox(
-                            height: 100,
+                            height: 110,
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const Text("Create New Account "),
+                              const Text("Already Have an Account ?"),
                               const SizedBox(
                                 width: 4,
                               ),
@@ -198,12 +205,11 @@ class _LoginPageState extends State<LoginPage> {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) =>
-                                              const MyRegister(),
+                                          builder: (context) => LoginPage(),
                                         ));
                                   },
                                   child: const Text(
-                                    "Sign Up",
+                                    "Login",
                                     style: TextStyle(
                                         color: Color(0xFF252c4a),
                                         fontSize: 18,

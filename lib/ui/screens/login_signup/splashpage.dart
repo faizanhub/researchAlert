@@ -1,18 +1,8 @@
-
 // splash screen code before starting app for 3se
-
-
-
-
-
-
-
-
-
 
 // import 'dart:async';
 // import 'package:flutter/material.dart';
-// import 'package:research_alert/log_splash/login.dart';
+// import 'package:research_alert/login_signup/login.dart';
 
 // class Page extends StatefulWidget {
 //   static const id = '/Page';

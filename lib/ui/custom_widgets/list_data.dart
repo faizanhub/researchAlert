@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:research_alert/models/list_model.dart';
+import 'package:research_alert/core/models/list_model.dart';
 
 class Listdata extends StatelessWidget {
   const Listdata({

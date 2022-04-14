@@ -1,8 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:research_alert/log_splash/login.dart';
-import 'package:research_alert/screens/home_screen.dart';
+
+import 'package:research_alert/ui/screens/home_screen.dart';
+import 'package:research_alert/ui/screens/login_signup/login.dart';
 
 class SplashPage extends StatelessWidget {
   SplashPage({Key? key}) : super(key: key);

@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-// import 'package:research_alert/screens/components/searchbar.dart';
-import '../firebase_services/show_data.dart';
-import 'components/bottombar.dart';
-import 'components/list_button.dart';
-// import 'components/list_data.dart';
-import 'components/list_data.dart';
-import 'components/searchbar.dart';
-import 'components/custom_appbar.dart';
+import '../custom_widgets/bottombar.dart';
+import '../custom_widgets/list_button.dart';
+import '../custom_widgets/list_data.dart';
+import '../custom_widgets/searchbar.dart';
+import '../custom_widgets/custom_appbar.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -20,7 +17,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      bottomNavigationBar: const CustomBottomBar(),
+      bottomNavigationBar: CustomBottomBar(),
       body: SafeArea(
           child: ListView(
         children: const [

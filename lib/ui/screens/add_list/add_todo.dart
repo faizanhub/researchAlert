@@ -3,12 +3,12 @@ import 'dart:async';
 
 import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 
-class Addtodo extends StatefulWidget {
+class AddTodo extends StatefulWidget {
   @override
-  _AddtodoState createState() => _AddtodoState();
+  _AddTodoState createState() => _AddTodoState();
 }
 
-class _AddtodoState extends State<Addtodo> {
+class _AddTodoState extends State<AddTodo> {
   late StreamSubscription _intentDataStreamSubscription;
   List<SharedMediaFile>? _sharedFiles;
   String? _sharedText;
@@ -104,17 +104,10 @@ class _AddtodoState extends State<Addtodo> {
   }
 }
 
-
-
-
-
-
-
 // Firebase add Data Code or esk next jo ha wo editer k design ka code ha comment me
 
-
 // import 'package:flutter/material.dart';
-// import 'package:research_alert/firebase_services/database_services.dart';
+// import 'package:research_alert/services/database_services.dart';
 
 // class Addtodo extends StatelessWidget {
 //   Addtodo({Key? key}) : super(key: key);
@@ -213,17 +206,7 @@ class _AddtodoState extends State<Addtodo> {
 //   }
 // }
 
-
-
-
-
-
-
-
 // only design code
-
-
-
 
 // import '../../models/list_model.dart';
 // import 'package:research_alert/screens/add_list/add_todo.dart';
