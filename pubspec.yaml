@@ -38,6 +38,9 @@ dependencies:
   firebase_core: ^1.13.1
   cloud_firestore: ^3.1.10
   firebase_auth: ^3.3.13
+  flutter_datetime_picker: ^1.5.1
+  intl: ^0.17.0
+  flutter_local_notifications: ^9.4.0
 
   
   

@@ -3,6 +3,8 @@ import 'dart:async';
 
 import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 import 'package:research_alert/core/services/database_services.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:intl/intl.dart';
 
 class AddTodo extends StatefulWidget {
   @override
@@ -21,39 +23,14 @@ class _AddTodoState extends State<AddTodo> {
 
   bool isBold = false;
 
+  late DateTime dateTime;
+
   @override
   void initState() {
     super.initState();
 
     _descC.text = widget.value ?? '';
-
-    // For sharing or opening urls/text coming from outside the app while the app is in the memory
-    // _intentDataStreamSubscription =
-    //     ReceiveSharingIntent.getTextStream().listen((String value) {
-    //   setState(() {
-    //     _sharedText = value;
-    //     print("Shared memory: $_sharedText");
-    //     urlC.text = _sharedText ?? '';
-    //   });
-    // }, onError: (err) {
-    //   print("getLinkStream error: $err");
-    // });
-    //
-    // // For sharing or opening urls/text coming from outside the app while the app is closed
-    // ReceiveSharingIntent.getInitialText().then((String? value) {
-    //   setState(() {
-    //     _sharedText = value;
-    //     print("Shared closed: $_sharedText");
-    //     urlC.text = _sharedText ?? '';
-    //   });
-    // });
   }
-
-  // @override
-  // void dispose() {
-  //   _intentDataStreamSubscription.cancel();
-  //   super.dispose();
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -96,6 +73,35 @@ class _AddTodoState extends State<AddTodo> {
                           borderRadius: BorderRadius.circular(10))),
                 ),
                 SizedBox(height: 20),
+
+                ElevatedButton(
+                    onPressed: () {
+                      DatePicker.showDateTimePicker(context,
+                          showTitleActions: true,
+                          minTime: DateTime.now(),
+                          maxTime: DateTime(2022, 12, 31), onChanged: (date) {
+                        print('change $date');
+                      }, onConfirm: (dateTimeIs) {
+                        print('confirm $dateTimeIs');
+
+                        setState(() {
+                          dateTime = dateTimeIs;
+                        });
+
+                        print('dateTime ${dateTime.millisecondsSinceEpoch}');
+
+                        final mydateTime = DateTime.fromMillisecondsSinceEpoch(
+                            dateTime.millisecondsSinceEpoch);
+
+                        var abc = DateFormat('dd MMM yyyy hh:mm:ss')
+                            .format(mydateTime);
+
+                        print('date in human read $abc');
+                      }, currentTime: DateTime.now(), locale: LocaleType.en);
+                    },
+                    child: Text(
+                      'Show DateTime Picker',
+                    )),
 
                 ElevatedButton(
                     onPressed: () async {
