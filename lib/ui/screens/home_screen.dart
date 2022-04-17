@@ -32,7 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
     _intentDataStreamSubscription =
         ReceiveSharingIntent.getTextStream().listen((String value) {
       Navigator.push(context,
-          MaterialPageRoute(builder: (context) => AddTodo(value: value)));
+          MaterialPageRoute(builder: (context) => AddTodo(text: value)));
     }, onError: (err) {
       print("getLinkStream error: $err");
     });
@@ -42,7 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
     ReceiveSharingIntent.getInitialText().then((String? value) {
       if (value != null) {
         Navigator.push(context,
-            MaterialPageRoute(builder: (context) => AddTodo(value: value)));
+            MaterialPageRoute(builder: (context) => AddTodo(text: value)));
       }
     });
   }
@@ -53,15 +53,17 @@ class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: Colors.white,
       bottomNavigationBar: CustomBottomBar(),
       body: SafeArea(
-          child: ListView(
-        children: const [
-          CustomAppBar(),
-          SearchBar(),
-          ListButtonContainer(),
-          Listdata(),
-          // ShowDataPage(),
-        ],
-      )),
+        child: ListView(
+          children: [
+            CustomAppBar(),
+            // SearchBar(),
+            ListButtonContainer(),
+
+            Listdata(),
+            // ShowDataPage(),
+          ],
+        ),
+      ),
     );
   }
 }

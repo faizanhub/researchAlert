@@ -37,7 +37,7 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
-  Future<void> ecoDialogue(String error) async {
+  void ecoDialogue(String error) {
     showDialog(
         context: context,
         builder: (_) {

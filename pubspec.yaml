@@ -40,7 +40,11 @@ dependencies:
   firebase_auth: ^3.3.13
   flutter_datetime_picker: ^1.5.1
   intl: ^0.17.0
+
+  #local notification
   flutter_local_notifications: ^9.4.0
+  rxdart: ^0.27.3
+  flutter_native_timezone: ^2.0.0
 
   
   

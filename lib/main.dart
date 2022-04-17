@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 
 import 'package:firebase_core/firebase_core.dart';
+import 'package:research_alert/core/services/notification_service.dart';
+import 'package:research_alert/ui/custom_widgets/list_data.dart';
 import 'package:research_alert/ui/screens/login_signup/splash_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  // await NotificationService.init();
   runApp(const MyApp());
 }
 
@@ -22,11 +25,6 @@ class MyApp extends StatelessWidget {
         fontFamily: 'roboto-regular',
       ),
       home: SplashPage(),
-      // home: const SplashPage(),
-      // routes: {
-      //   SplashPage.id: (context) => const SplashPage(),
-      //   LoginPage.id: (context) => LoginPage(),
-      // },
     );
   }
 }

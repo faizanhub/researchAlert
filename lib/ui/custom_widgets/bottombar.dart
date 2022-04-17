@@ -25,7 +25,30 @@ class CustomBottomBar extends StatelessWidget {
         children: [
           IconButton(
               onPressed: () {
-                _authService.signOut();
+                showDialog(
+                    context: context,
+                    builder: (ctx) {
+                      return AlertDialog(
+                        title: Text('Logout'),
+                        content: Text('Do you want to Logout?'),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: Text('Cancel',
+                                style: TextStyle(color: Colors.red)),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              _authService.signOut();
+                              Navigator.pop(context);
+                            },
+                            child: Text('Ok'),
+                          ),
+                        ],
+                      );
+                    });
               },
               icon: const Icon(Icons.logout)),
           InkWell(
@@ -34,7 +57,7 @@ class CustomBottomBar extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                       builder: (context) => AddTodo(
-                            value: '',
+                            text: '',
                           )));
             },
             child: Container(

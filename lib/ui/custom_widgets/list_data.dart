@@ -1,71 +1,75 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:research_alert/core/models/list_model.dart';
+import 'package:research_alert/core/models/notes_model.dart';
+import 'package:research_alert/core/services/database_services.dart';
+import 'package:research_alert/core/utils/alert_dialog.dart';
+import 'package:research_alert/ui/custom_widgets/list_card.dart';
+import 'package:research_alert/ui/screens/notes_detail_screen.dart';
 
 class Listdata extends StatelessWidget {
-  const Listdata({
-    Key? key,
-  }) : super(key: key);
+  const Listdata();
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10.0),
-      child: GridView.builder(
-          shrinkWrap: true,
-          physics: const ScrollPhysics(),
-          itemCount: products.length,
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            crossAxisSpacing: 10.0,
-            mainAxisSpacing: 10.0,
-          ),
-          itemBuilder: (context, index) => ListCard(
-                product: products[index],
-                press: () {},
-              )),
-    );
-  }
-}
+    return StreamBuilder<QuerySnapshot>(
+      stream: DataBaseServices().getAllNotes(),
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          showAlertDialog(
+              context, "Error", 'Error occurred while loading data');
+        } else if (!snapshot.hasData) {
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Center(child: CircularProgressIndicator()),
+            ],
+          );
+        } else if (snapshot.hasData && snapshot.data!.docs.isEmpty) {
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text('No Notes '),
+            ],
+          );
+        }
 
-class ListCard extends StatelessWidget {
-  const ListCard({
-    Key? key,
-    required this.product,
-    required this.press,
-  }) : super(key: key);
-  final Product product;
-  final VoidCallback press;
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: press,
-      child: Container(
-        padding: const EdgeInsets.all(8.0),
-        decoration: BoxDecoration(
-          color: product.color,
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-        child: Column(
-          children: [
-            Text(
-              product.title,
-              style: const TextStyle(
-                fontWeight: FontWeight.w600,
-                fontSize: 19,
-              ),
-            ),
-            Text(
-              product.desc,
-              maxLines: 5,
-              style: const TextStyle(
-                fontSize: 16,
-                color: Colors.black54,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ],
-        ),
-      ),
+        //Now the data is received
+
+        List<QueryDocumentSnapshot> notes = snapshot.data!.docs;
+        List<Notes> notesList = [];
+
+        notes.forEach((note) {
+          var notesMap = note.data() as Map<String, dynamic>;
+
+          notesList.add(Notes.fromJson(notesMap));
+        });
+
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+          child: ListView.builder(
+              shrinkWrap: true,
+              physics: const ScrollPhysics(),
+              itemCount: notes.length,
+              itemBuilder: (context, index) {
+                var ref = snapshot.data!.docs[index].reference;
+
+                return ListCard(
+                  notes: notesList[index],
+                  press: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => NotesDetailScreen(
+                          notes: notesList[index],
+                          ref: ref,
+                        ),
+                      ),
+                    );
+                  },
+                );
+              }),
+        );
+      },
     );
   }
 }

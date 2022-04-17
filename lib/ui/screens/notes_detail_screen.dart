@@ -1,32 +1,30 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'dart:async';
-
-import 'package:receive_sharing_intent/receive_sharing_intent.dart';
-import 'package:research_alert/core/services/database_services.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:research_alert/core/models/notes_model.dart';
+import 'package:research_alert/core/services/database_services.dart';
 import 'package:research_alert/core/services/notification_service.dart';
 import 'package:research_alert/core/utils/alert_dialog.dart';
 import 'package:research_alert/ui/screens/home_screen.dart';
-import 'package:research_alert/ui/screens/third_screen.dart';
 
-class AddTodo extends StatefulWidget {
+class NotesDetailScreen extends StatefulWidget {
+  Notes notes;
+  DocumentReference ref;
+
+  NotesDetailScreen({required this.notes, required this.ref});
+
   @override
-  _AddTodoState createState() => _AddTodoState();
-
-  String? text;
-
-  AddTodo({required this.text});
+  State<NotesDetailScreen> createState() => _NotesDetailScreenState();
 }
 
-class _AddTodoState extends State<AddTodo> {
+class _NotesDetailScreenState extends State<NotesDetailScreen> {
   DataBaseServices _dataBaseServices = DataBaseServices();
 
   NotificationService _notificationService = NotificationService();
 
   TextEditingController _titleC = TextEditingController();
   TextEditingController _descC = TextEditingController();
-  TextEditingController _scheduleC = TextEditingController();
 
   bool isBold = false;
   bool isLoading = false;
@@ -37,42 +35,15 @@ class _AddTodoState extends State<AddTodo> {
   void initState() {
     super.initState();
 
-    _descC.text = widget.text ?? '';
-    NotificationService.init();
-    listenNotification();
+    _titleC.text = widget.notes.title;
+    _descC.text = widget.notes.desc;
+    dateTime = widget.notes.reminder.toDate();
   }
 
   toggleLoading(bool value) {
     setState(() {
       isLoading = value;
     });
-  }
-
-  listenNotification() {
-    NotificationService.onNotifications.stream.listen(onClickedNotification);
-  }
-
-  onClickedNotification(String? payload) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => ThirdScreen(payload: payload),
-      ),
-    );
-  }
-
-  onConfirmDateTime(DateTime dateTimeIs) {
-    FocusScope.of(context).unfocus();
-    setState(() {
-      dateTime = dateTimeIs;
-    });
-
-    final mydateTime =
-        DateTime.fromMillisecondsSinceEpoch(dateTime!.millisecondsSinceEpoch);
-
-    var formattedDate = DateFormat('dd MMM yyyy  hh:mm:ss').format(mydateTime);
-
-    print('date in human read $formattedDate');
   }
 
   String getFormattedDataTime(DateTime dateTime) {
@@ -84,55 +55,53 @@ class _AddTodoState extends State<AddTodo> {
     return formattedDate;
   }
 
-  Future<void> handleScheduleNotification() async {
-    try {
-      await _notificationService.showScheduledNotification(
-        title: _titleC.text,
-        body: _descC.text,
-        payload: 'def',
-        // scheduleDateTime:
-        //     DateTime.now().add(Duration(seconds: 3)),
-        scheduleDateTime: dateTime,
-      );
+  onConfirmDateTime(DateTime dateTimeIs) {
+    FocusScope.of(context).unfocus();
+    setState(() {
+      dateTime = dateTimeIs;
+    });
 
-      // showAlertDialog(context, 'Notification', 'Scheduled');
-    } catch (e) {
-      print('Error ' + e.toString());
-    }
+    final mydateTime =
+        DateTime.fromMillisecondsSinceEpoch(dateTime!.millisecondsSinceEpoch);
+
+    var formattedDate = DateFormat('dd MMM yyyy  hh:mm a').format(mydateTime);
+
+    print('date in human read $formattedDate');
   }
 
-  Future<void> handleAddNote() async {
-    if (_titleC.text.isNotEmpty && _descC.text.isNotEmpty && dateTime != null) {
-      toggleLoading(true);
+  updateNotes() async {
+    try {
+      if (_titleC.text.isNotEmpty &&
+          _descC.text.isNotEmpty &&
+          dateTime != null) {
+        toggleLoading(true);
 
-      await handleScheduleNotification();
+        await _dataBaseServices.updateNotesData(
+            widget.ref, _titleC.text, _descC.text, dateTime!);
 
-      await _dataBaseServices.addData(_titleC.text, _descC.text, dateTime!);
+        toggleLoading(false);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Note Updated Successfully'),
+          ),
+        );
 
-      showAlertDialog(context, 'Success', 'Note Added and Scheduled');
-
-      toggleLoading(false);
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Note Added Successfully'),
-        ),
-      );
-
-      Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (context) => HomeScreen()),
-          (route) => false);
-    } else {
-      showAlertDialog(context, 'Error', 'Please Input all field');
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => HomeScreen()),
+            (route) => false);
+      } else {
+        showAlertDialog(context, 'Error', 'Please Input all field');
+      }
+    } catch (e) {
+      showAlertDialog(
+          context, 'Error', 'Some error occurred while updating data');
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    const textStyleBold =
-        const TextStyle(fontWeight: FontWeight.bold, fontSize: 16);
-
+    const textStyleBold = const TextStyle(fontWeight: FontWeight.bold);
     var width = MediaQuery.of(context).size.width / 2;
 
     return MaterialApp(
@@ -154,7 +123,7 @@ class _AddTodoState extends State<AddTodo> {
               ),
             ),
             title: const Text(
-              'Add New Title',
+              'Update Note',
               style: TextStyle(color: Colors.black),
             ),
           ),
@@ -169,9 +138,8 @@ class _AddTodoState extends State<AddTodo> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        SizedBox(height: 20),
-                        Text("Title:", style: textStyleBold),
-                        SizedBox(height: 5),
+                        Text("Title", style: textStyleBold),
+
                         TextFormField(
                           controller: _titleC,
                           decoration: InputDecoration(
@@ -182,23 +150,21 @@ class _AddTodoState extends State<AddTodo> {
 
                         SizedBox(height: 20),
 
-                        Text("Description:", style: textStyleBold),
+                        Text("Details", style: textStyleBold),
                         // Text(_sharedText ?? ""),
-                        SizedBox(height: 5),
+
                         TextFormField(
                           maxLines: 25,
                           minLines: 8,
                           // textAlign: TextAlign.start,
                           controller: _descC,
                           decoration: InputDecoration(
-                              labelText: "Enter Description",
+                              labelText: "Enter Details",
                               border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10))),
                         ),
                         SizedBox(height: 20),
-                        Text("Schedule Reminder:", style: textStyleBold),
-                        // Text(_sharedText ?? ""),
-                        SizedBox(height: 5),
+
                         GestureDetector(
                           onTap: () {
                             DatePicker.showDateTimePicker(
@@ -253,13 +219,12 @@ class _AddTodoState extends State<AddTodo> {
                         SizedBox(height: 20),
 
                         ElevatedButton(
-                          onPressed: handleAddNote,
+                          onPressed: updateNotes,
                           style: ButtonStyle(
                             minimumSize:
                                 MaterialStateProperty.all(Size(width, 40)),
                           ),
-                          child:
-                              Text('Add Note', style: TextStyle(fontSize: 17)),
+                          child: Text('Update'),
                         ),
 
                         // Text(
