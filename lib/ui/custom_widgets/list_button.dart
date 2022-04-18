@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:research_alert/ui/screens/bookmarks_home_screen.dart';
 
 class ListButtonContainer extends StatelessWidget {
   const ListButtonContainer({
@@ -17,8 +18,13 @@ class ListButtonContainer extends StatelessWidget {
             title: "Notes",
           ),
           ListsButton(
-            press: () {},
-            title: "Book Marks",
+            press: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => BookmarksHomeScreen()));
+            },
+            title: "Bookmarks",
           ),
         ],
       ),

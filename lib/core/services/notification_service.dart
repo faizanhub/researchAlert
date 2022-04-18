@@ -33,7 +33,7 @@ class NotificationService {
         'channel name',
         channelDescription: 'channel description',
         importance: Importance.max,
-        priority: Priority.high,
+        // priority: Priority.high,
         ticker: 'ticker',
         ongoing: true,
         styleInformation: BigTextStyleInformation(''),

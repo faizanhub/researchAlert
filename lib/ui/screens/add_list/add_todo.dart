@@ -39,26 +39,12 @@ class _AddTodoState extends State<AddTodo> {
 
     _descC.text = widget.text ?? '';
     NotificationService.init();
-    listenNotification();
   }
 
   toggleLoading(bool value) {
     setState(() {
       isLoading = value;
     });
-  }
-
-  listenNotification() {
-    NotificationService.onNotifications.stream.listen(onClickedNotification);
-  }
-
-  onClickedNotification(String? payload) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => ThirdScreen(payload: payload),
-      ),
-    );
   }
 
   onConfirmDateTime(DateTime dateTimeIs) {

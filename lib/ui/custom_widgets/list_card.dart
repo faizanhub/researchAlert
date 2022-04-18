@@ -8,10 +8,12 @@ import 'dart:math' as math;
 class ListCard extends StatelessWidget {
   final Notes notes;
   final VoidCallback press;
+  final VoidCallback onLongPress;
 
   const ListCard({
     required this.notes,
     required this.press,
+    required this.onLongPress,
   });
 
   @override
@@ -27,6 +29,7 @@ class ListCard extends StatelessWidget {
 
     return InkWell(
       onTap: press,
+      onLongPress: onLongPress,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 5),
         child: SizedBox(

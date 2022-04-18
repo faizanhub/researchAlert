@@ -5,9 +5,10 @@ import 'package:research_alert/core/services/database_services.dart';
 import 'package:research_alert/core/utils/alert_dialog.dart';
 import 'package:research_alert/ui/custom_widgets/list_card.dart';
 import 'package:research_alert/ui/screens/notes_detail_screen.dart';
+import 'package:research_alert/ui/screens/update_bookmarks_screen.dart';
 
-class Listdata extends StatelessWidget {
-  const Listdata();
+class BookMarksListData extends StatelessWidget {
+  const BookMarksListData();
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +39,7 @@ class Listdata extends StatelessWidget {
     }
 
     return StreamBuilder<QuerySnapshot>(
-      stream: DataBaseServices().getAllNotes(),
+      stream: DataBaseServices().getAllBookMarksNotes(),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           showAlertDialog(
@@ -88,7 +89,7 @@ class Listdata extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (_) => NotesDetailScreen(
+                        builder: (_) => UpdateBookmarkScreen(
                           notes: notesList[index],
                           ref: ref,
                         ),

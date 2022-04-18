@@ -9,6 +9,10 @@ import 'package:research_alert/ui/screens/add_list/add_todo.dart';
 class CustomBottomBar extends StatelessWidget {
   AuthService _authService = AuthService();
 
+  final void Function()? onTap;
+
+  CustomBottomBar({this.onTap});
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -52,14 +56,7 @@ class CustomBottomBar extends StatelessWidget {
               },
               icon: const Icon(Icons.logout)),
           InkWell(
-            onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => AddTodo(
-                            text: '',
-                          )));
-            },
+            onTap: onTap,
             child: Container(
               padding: const EdgeInsets.all(10.0),
               decoration: BoxDecoration(

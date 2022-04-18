@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Research Alert',
+      title: 'Research Alerts',
       theme: ThemeData(
         primaryColor: Colors.deepPurple,
         fontFamily: 'roboto-regular',

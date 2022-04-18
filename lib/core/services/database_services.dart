@@ -15,10 +15,54 @@ class DataBaseServices {
   }
 
   Stream<QuerySnapshot<Map<String, dynamic>>> getAllNotes() {
-    return _firebaseFirestore.collection('notes').snapshots();
+    return _firebaseFirestore
+        .collection('notes')
+        .orderBy('createdAt', descending: true)
+        .snapshots();
   }
 
   Future<void> updateNotesData(DocumentReference ref, String title,
+      String detail, DateTime dateTime) async {
+    try {
+      await ref.update({
+        "title": title,
+        "detail": detail,
+        'createdAt': DateTime.now(),
+        'reminder': dateTime,
+      });
+
+      // .set(teacher.toJson(), SetOptions(merge: true));
+    } catch (e) {
+      print(
+          'Exception occurred while saving data to firestore ${e.toString()}');
+      rethrow;
+    }
+  }
+
+  Future<void> deleteNote(DocumentReference ref) async {
+    await ref.delete();
+  }
+
+  ///Bookmarks Methods
+
+  Future<void> addBookmarksData(
+      String title, String detail, DateTime dateTime) async {
+    await _firebaseFirestore.collection('bookmarks').add({
+      "title": title,
+      "detail": detail,
+      'createdAt': DateTime.now(),
+      'reminder': dateTime,
+    });
+  }
+
+  Stream<QuerySnapshot<Map<String, dynamic>>> getAllBookMarksNotes() {
+    return _firebaseFirestore
+        .collection('bookmarks')
+        .orderBy('createdAt', descending: true)
+        .snapshots();
+  }
+
+  Future<void> updateBookMarksData(DocumentReference ref, String title,
       String detail, DateTime dateTime) async {
     try {
       await ref.update({

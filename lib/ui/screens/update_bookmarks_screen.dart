@@ -9,17 +9,17 @@ import 'package:research_alert/core/utils/alert_dialog.dart';
 import 'package:research_alert/ui/screens/home_screen.dart';
 import 'package:research_alert/ui/screens/third_screen.dart';
 
-class NotesDetailScreen extends StatefulWidget {
+class UpdateBookmarkScreen extends StatefulWidget {
   Notes notes;
   DocumentReference ref;
 
-  NotesDetailScreen({required this.notes, required this.ref});
+  UpdateBookmarkScreen({required this.notes, required this.ref});
 
   @override
-  State<NotesDetailScreen> createState() => _NotesDetailScreenState();
+  State<UpdateBookmarkScreen> createState() => _UpdateBookmarkScreenState();
 }
 
-class _NotesDetailScreenState extends State<NotesDetailScreen> {
+class _UpdateBookmarkScreenState extends State<UpdateBookmarkScreen> {
   DataBaseServices _dataBaseServices = DataBaseServices();
 
   NotificationService _notificationService = NotificationService();
@@ -102,7 +102,7 @@ class _NotesDetailScreenState extends State<NotesDetailScreen> {
     }
   }
 
-  updateNotes() async {
+  updateBookmark() async {
     try {
       if (_titleC.text.isNotEmpty &&
           _descC.text.isNotEmpty &&
@@ -111,13 +111,13 @@ class _NotesDetailScreenState extends State<NotesDetailScreen> {
 
         await handleScheduleNotification();
 
-        await _dataBaseServices.updateNotesData(
+        await _dataBaseServices.updateBookMarksData(
             widget.ref, _titleC.text, _descC.text, dateTime!);
 
         toggleLoading(false);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Note Updated Successfully'),
+            content: Text('Bookmark Updated Successfully'),
           ),
         );
 
@@ -158,7 +158,7 @@ class _NotesDetailScreenState extends State<NotesDetailScreen> {
               ),
             ),
             title: const Text(
-              'Update Note',
+              'Update Bookmark',
               style: TextStyle(color: Colors.black),
             ),
           ),
@@ -254,12 +254,12 @@ class _NotesDetailScreenState extends State<NotesDetailScreen> {
                         SizedBox(height: 20),
 
                         ElevatedButton(
-                          onPressed: updateNotes,
+                          onPressed: updateBookmark,
                           style: ButtonStyle(
                             minimumSize:
                                 MaterialStateProperty.all(Size(width, 40)),
                           ),
-                          child: Text('Update'),
+                          child: Text('Update Bookmark'),
                         ),
 
                         // Text(
