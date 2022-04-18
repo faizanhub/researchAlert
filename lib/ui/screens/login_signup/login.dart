@@ -151,34 +151,35 @@ class _LoginPageState extends State<LoginPage> {
                           const SizedBox(
                             height: 15,
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 1, vertical: 10),
-                                child: InkWell(
-                                    onTap: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                const ForgetPassword(),
-                                          ));
-                                    },
-                                    child: const Text(
-                                      "Forgot Password ?",
-                                      style: TextStyle(
-                                          color: Color.fromARGB(
-                                              255, 247, 247, 248),
-                                          fontSize: 17,
-                                          fontWeight: FontWeight.bold),
-                                    )),
-                              )
-                            ],
-                          ),
+                          // Row(
+                          //   mainAxisAlignment: MainAxisAlignment.end,
+                          //   children: [
+                          //     Padding(
+                          //       padding: const EdgeInsets.symmetric(
+                          //           horizontal: 1, vertical: 10),
+                          //       child: InkWell(
+                          //         onTap: () {
+                          //           Navigator.push(
+                          //               context,
+                          //               MaterialPageRoute(
+                          //                 builder: (context) =>
+                          //                     const ForgetPassword(),
+                          //               ));
+                          //         },
+                          //         child: const Text(
+                          //           "Forgot Password ?",
+                          //           style: TextStyle(
+                          //               color:
+                          //                   Color.fromARGB(255, 247, 247, 248),
+                          //               fontSize: 17,
+                          //               fontWeight: FontWeight.bold),
+                          //         ),
+                          //       ),
+                          //     )
+                          //   ],
+                          // ),
                           const SizedBox(
-                            height: 10,
+                            height: 30,
                           ),
                           Buttonw(
                             title: "LOGIN",

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
@@ -84,8 +85,10 @@ class _AddBookmarksScreenState extends State<AddBookmarksScreen> {
 
       await handleScheduleNotification();
 
+      var currentUser = FirebaseAuth.instance.currentUser;
+
       await _dataBaseServices.addBookmarksData(
-          _titleC.text, _descC.text, dateTime!);
+          _titleC.text, _descC.text, dateTime!, currentUser!);
 
       showAlertDialog(context, 'Success', 'Note Added and Scheduled');
 

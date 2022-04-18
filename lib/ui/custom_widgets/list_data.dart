@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:research_alert/core/models/notes_model.dart';
 import 'package:research_alert/core/services/database_services.dart';
@@ -37,8 +38,9 @@ class Listdata extends StatelessWidget {
           });
     }
 
+    var currentUser = FirebaseAuth.instance.currentUser;
     return StreamBuilder<QuerySnapshot>(
-      stream: DataBaseServices().getAllNotes(),
+      stream: DataBaseServices().getAllNotes(currentUser!),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           showAlertDialog(
@@ -47,6 +49,7 @@ class Listdata extends StatelessWidget {
           return Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              SizedBox(height: MediaQuery.of(context).size.height / 3.5),
               Center(child: CircularProgressIndicator()),
             ],
           );
@@ -54,7 +57,8 @@ class Listdata extends StatelessWidget {
           return Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text('No Notes '),
+              SizedBox(height: MediaQuery.of(context).size.height / 3.5),
+              Center(child: Text('No Notes ')),
             ],
           );
         }

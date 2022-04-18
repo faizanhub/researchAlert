@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 
@@ -93,7 +94,10 @@ class _AddTodoState extends State<AddTodo> {
 
       await handleScheduleNotification();
 
-      await _dataBaseServices.addData(_titleC.text, _descC.text, dateTime!);
+      var currentUser = FirebaseAuth.instance.currentUser;
+
+      await _dataBaseServices.addData(
+          _titleC.text, _descC.text, dateTime!, currentUser!);
 
       showAlertDialog(context, 'Success', 'Note Added and Scheduled');
 
