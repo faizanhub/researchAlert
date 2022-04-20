@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:research_alert/core/services/notification_service.dart';
-import 'package:research_alert/ui/screens/add_list/add_todo.dart';
+import 'package:research_alert/ui/screens/add_note/add_notes.dart';
 import 'package:research_alert/ui/screens/add_bookmarks_screen.dart';
 import 'package:research_alert/ui/screens/third_screen.dart';
 import '../custom_widgets/bottombar.dart';

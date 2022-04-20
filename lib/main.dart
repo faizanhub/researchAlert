@@ -5,6 +5,8 @@ import 'package:research_alert/core/services/notification_service.dart';
 import 'package:research_alert/ui/custom_widgets/list_data.dart';
 import 'package:research_alert/ui/screens/login_signup/splash_page.dart';
 
+import 'ui/screens/login_signup/splashpage.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -24,7 +26,7 @@ class MyApp extends StatelessWidget {
         primaryColor: Colors.deepPurple,
         fontFamily: 'roboto-regular',
       ),
-      home: SplashPage(),
+      home: Splash(),
     );
   }
 }

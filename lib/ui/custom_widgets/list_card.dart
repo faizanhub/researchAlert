@@ -53,9 +53,14 @@ class ListCard extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
-                  Text(
-                    getFormattedDataTime(notes.createdAt.toDate()),
-                    style: timeTextStyle,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(
+                        getFormattedDataTime(notes.createdAt.toDate()),
+                        style: timeTextStyle,
+                      ),
+                    ],
                   )
                 ],
               ),

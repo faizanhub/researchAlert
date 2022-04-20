@@ -69,8 +69,11 @@ class _LoginPageState extends State<LoginPage> {
           formStateLoading = false;
         });
       } else {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (_) => const HomeScreen()));
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (_) => const HomeScreen()),
+          (route) => false,
+        );
       }
     }
   }
