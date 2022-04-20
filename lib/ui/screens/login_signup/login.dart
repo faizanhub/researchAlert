@@ -1,39 +1,43 @@
 import 'package:flutter/material.dart';
-import 'package:research_alert/firebase_services/database_services.dart';
-import 'package:research_alert/log_splash/login.dart';
-import '../widgets/button.dart';
-import '../widgets/text_field.dart';
+import 'package:research_alert/core/services/auth_service.dart';
+import 'package:research_alert/core/services/database_services.dart';
+import 'package:research_alert/ui/custom_widgets/button.dart';
+import 'package:research_alert/ui/custom_widgets/text_field.dart';
 
-class MyRegister extends StatefulWidget {
-  const MyRegister({Key? key}) : super(key: key);
+import 'package:research_alert/ui/screens/home_screen.dart';
+import 'package:research_alert/ui/screens/login_signup/forget_password.dart';
+import 'package:research_alert/ui/screens/login_signup/signup.dart';
+
+class LoginPage extends StatefulWidget {
+  static const id = '/LoginPage';
+
+  LoginPage({Key? key}) : super(key: key);
 
   @override
-  State<MyRegister> createState() => _MyRegisterState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
-class _MyRegisterState extends State<MyRegister> {
-  TextEditingController emailC = TextEditingController();
+class _LoginPageState extends State<LoginPage> {
+  AuthService _authService = AuthService();
 
+  TextEditingController emailC = TextEditingController();
   TextEditingController passwordC = TextEditingController();
 
-  TextEditingController confirmpasswordC = TextEditingController();
-  FocusNode? passwordfocus;
-  FocusNode? confirmpasswordfocus;
   final formkey = GlobalKey<FormState>();
+  bool formStateLoading = false;
+
+  FocusNode? passwordfocus;
 
   bool ispassword = true;
-  bool isconfirmpassword = true;
-  bool formStateLoading = false;
 
   @override
   void dispose() {
     emailC.dispose();
     passwordC.dispose();
-    confirmpasswordC.dispose();
     super.dispose();
   }
 
-  Future<void> ecoDialogue(String error) async {
+  void ecoDialogue(String error) {
     showDialog(
         context: context,
         builder: (_) {
@@ -56,18 +60,20 @@ class _MyRegisterState extends State<MyRegister> {
       setState(() {
         formStateLoading = true;
       });
-      if (passwordC.text == confirmpasswordC.text) {
-        String? accountstatus =
-            await Authentication.createAccount(emailC.text, passwordC.text);
-        if (accountstatus != null) {
-          ecoDialogue(accountstatus);
-          setState(() {
-            formStateLoading = false;
-          });
-        } else {
-          Navigator.pop(context);
-        }
-        Navigator.push(context, MaterialPageRoute(builder: (_) => LoginPage()));
+
+      String? accountstatus =
+          await _authService.signInAccount(emailC.text, passwordC.text);
+      if (accountstatus != null) {
+        ecoDialogue(accountstatus);
+        setState(() {
+          formStateLoading = false;
+        });
+      } else {
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (_) => const HomeScreen()),
+          (route) => false,
+        );
       }
     }
   }
@@ -81,24 +87,20 @@ class _MyRegisterState extends State<MyRegister> {
       ),
       child: Scaffold(
         backgroundColor: Colors.transparent,
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-        ),
         body: Stack(
           children: [
             Container(
-              padding: const EdgeInsets.only(left: 35, top: 15),
+              padding: const EdgeInsets.only(left: 35, top: 120),
               child: const Text(
-                'Create\nAccount',
-                style: TextStyle(color: Colors.white, fontSize: 33),
+                'Welcome\nTo\nLogin Page',
+                style: TextStyle(color: Colors.white, fontSize: 30),
               ),
             ),
             SingleChildScrollView(
               child: Container(
                 margin: const EdgeInsets.only(left: 35, right: 35),
                 padding: EdgeInsets.only(
-                    top: MediaQuery.of(context).size.height * 0.20),
+                    top: MediaQuery.of(context).size.height * 0.43),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -108,7 +110,13 @@ class _MyRegisterState extends State<MyRegister> {
                       child: Column(
                         children: [
                           TextFieldW(
-                            check: true,
+                            inputAction: TextInputAction.next,
+                            controller: emailC,
+                            hintText: "Email",
+                            icon: const Icon(
+                              Icons.email,
+                              color: Colors.white,
+                            ),
                             validate: (v) {
                               if (v!.isEmpty ||
                                   !v.contains("@") ||
@@ -117,26 +125,11 @@ class _MyRegisterState extends State<MyRegister> {
                               }
                               return null;
                             },
-                            inputAction: TextInputAction.next,
-                            controller: emailC,
-                            hintText: "Email",
-                            icon: const Icon(
-                              Icons.email,
-                              color: Colors.white,
-                            ),
                           ),
                           const SizedBox(
-                            height: 25,
+                            height: 45,
                           ),
                           TextFieldW(
-                            validate: (v) {
-                              if (v!.isEmpty) {
-                                return "Password should not be empty";
-                              }
-                              return null;
-                            },
-                            focusNode: passwordfocus,
-                            inputAction: TextInputAction.next,
                             isPassword: ispassword,
                             controller: passwordC,
                             hintText: "Password",
@@ -151,50 +144,60 @@ class _MyRegisterState extends State<MyRegister> {
                                   ? const Icon(Icons.visibility)
                                   : const Icon(Icons.visibility_off),
                             ),
-                          ),
-                          const SizedBox(
-                            height: 25,
-                          ),
-                          TextFieldW(
-                            isPassword: isconfirmpassword,
-                            controller: confirmpasswordC,
                             validate: (v) {
                               if (v!.isEmpty) {
                                 return "Password should not be empty";
                               }
                               return null;
                             },
-                            hintText: "ConfirmPassword",
-                            icon: IconButton(
-                              color: Colors.white,
-                              onPressed: () {
-                                setState(() {
-                                  isconfirmpassword = !isconfirmpassword;
-                                });
-                              },
-                              icon: ispassword
-                                  ? const Icon(Icons.visibility)
-                                  : const Icon(Icons.visibility_off),
-                            ),
                           ),
                           const SizedBox(
-                            height: 50,
+                            height: 15,
+                          ),
+                          // Row(
+                          //   mainAxisAlignment: MainAxisAlignment.end,
+                          //   children: [
+                          //     Padding(
+                          //       padding: const EdgeInsets.symmetric(
+                          //           horizontal: 1, vertical: 10),
+                          //       child: InkWell(
+                          //         onTap: () {
+                          //           Navigator.push(
+                          //               context,
+                          //               MaterialPageRoute(
+                          //                 builder: (context) =>
+                          //                     const ForgetPassword(),
+                          //               ));
+                          //         },
+                          //         child: const Text(
+                          //           "Forgot Password ?",
+                          //           style: TextStyle(
+                          //               color:
+                          //                   Color.fromARGB(255, 247, 247, 248),
+                          //               fontSize: 17,
+                          //               fontWeight: FontWeight.bold),
+                          //         ),
+                          //       ),
+                          //     )
+                          //   ],
+                          // ),
+                          const SizedBox(
+                            height: 30,
                           ),
                           Buttonw(
-                            title: "Sign Up",
-                            isLoginButton: true,
+                            title: "LOGIN",
+                            isLoading: formStateLoading,
                             onPress: () {
                               submit();
                             },
-                            isLoading: formStateLoading,
                           ),
                           const SizedBox(
-                            height: 110,
+                            height: 100,
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const Text("Already Have an Account ?"),
+                              const Text("Create New Account "),
                               const SizedBox(
                                 width: 4,
                               ),
@@ -203,11 +206,12 @@ class _MyRegisterState extends State<MyRegister> {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) => LoginPage(),
+                                          builder: (context) =>
+                                              const MyRegister(),
                                         ));
                                   },
                                   child: const Text(
-                                    "Login",
+                                    "Sign Up",
                                     style: TextStyle(
                                         color: Color(0xFF252c4a),
                                         fontSize: 18,

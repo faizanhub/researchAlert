@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:research_alert/ui/screens/bookmarks_home_screen.dart';
 
 class ListButtonContainer extends StatelessWidget {
   const ListButtonContainer({
@@ -8,21 +9,22 @@ class ListButtonContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10.0),
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
         children: [
-          LitsButton(
+          ListsButton(
             isActive: true,
             press: () {},
             title: "Notes",
           ),
-          LitsButton(
-            press: () {},
-            title: "Book Marks",
-          ),
-          LitsButton(
-            press: () {},
-            title: "To Do",
+          ListsButton(
+            press: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => BookmarksHomeScreen()));
+            },
+            title: "Bookmarks",
           ),
         ],
       ),
@@ -31,16 +33,17 @@ class ListButtonContainer extends StatelessWidget {
 }
 
 // ignore: must_be_immutable
-class LitsButton extends StatelessWidget {
-  LitsButton({
-    Key? key,
-    this.isActive = false,
-    required this.title,
-    required this.press,
-  }) : super(key: key);
+class ListsButton extends StatelessWidget {
   final String title;
   final VoidCallback press;
   bool isActive;
+
+  ListsButton({
+    this.isActive = false,
+    required this.title,
+    required this.press,
+  });
+
   @override
   Widget build(BuildContext context) {
     return TextButton(

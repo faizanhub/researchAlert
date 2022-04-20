@@ -38,7 +38,19 @@ dependencies:
   firebase_core: ^1.13.1
   cloud_firestore: ^3.1.10
   firebase_auth: ^3.3.13
-  firebase_analytics: ^5.0.2
+  flutter_datetime_picker: ^1.5.1
+  intl: ^0.17.0
+  flutter_quill: ^4.1.2
+  flutter_linkify: ^5.0.2
+  url_launcher: ^6.0.20
+
+  #local notification
+  flutter_local_notifications: ^9.4.0
+  rxdart: ^0.27.3
+  flutter_native_timezone: ^2.0.0
+
+
+
   
   
 
@@ -52,7 +64,7 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^1.0.0
+#  flutter_lints: ^1.0.0
 
 flutter_icons:
   image_path: "images/AppLogo.png"  

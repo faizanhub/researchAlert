@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:research_alert/log_splash/login.dart';
-import 'package:research_alert/log_splash/signup.dart';
-import 'package:research_alert/widgets/button.dart';
-import 'package:research_alert/widgets/text_field.dart';
-import '../screens/home_screen.dart';
+import 'package:research_alert/ui/custom_widgets/button.dart';
+import 'package:research_alert/ui/custom_widgets/text_field.dart';
+import 'package:research_alert/ui/screens/login_signup/login.dart';
 
 class ForgetPassword extends StatefulWidget {
   const ForgetPassword({Key? key}) : super(key: key);
