@@ -1,6 +1,6 @@
 # Receive sharing intent example
 
-This flutter project shows how to use receive_sharing_intent package to receive text & files.
+A research notes take application with Reminder system and bookmarks of youtube videos to rewatch them again on a specific time.
 
 ## App Screenshots:
 
