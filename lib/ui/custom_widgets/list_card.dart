@@ -36,7 +36,7 @@ class ListCard extends StatelessWidget {
           height: 120,
           child: Card(
             elevation: 2,
-            color: Color(0xfff2f2f8),
+            color: const Color(0xfff2f2f8),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
@@ -44,7 +44,7 @@ class ListCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(notes.title, style: titleTextStyle),
-                  SizedBox(height: 5),
+                  const SizedBox(height: 5),
                   Flexible(
                     child: Text(
                       notes.desc,

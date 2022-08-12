@@ -107,14 +107,14 @@ class _AddTodoState extends State<AddTodo> {
       toggleLoading(false);
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('Note Added Successfully'),
         ),
       );
 
       Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (context) => HomeScreen()),
+          MaterialPageRoute(builder: (context) => const HomeScreen()),
           (route) => false);
     } else {
       showAlertDialog(context, 'Error', 'Please Input all field');
@@ -123,8 +123,7 @@ class _AddTodoState extends State<AddTodo> {
 
   @override
   Widget build(BuildContext context) {
-    const textStyleBold =
-        const TextStyle(fontWeight: FontWeight.bold, fontSize: 16);
+    const textStyleBold = TextStyle(fontWeight: FontWeight.bold, fontSize: 16);
 
     var width = MediaQuery.of(context).size.width / 2;
 
@@ -141,7 +140,7 @@ class _AddTodoState extends State<AddTodo> {
               onTap: () {
                 Navigator.pop(context);
               },
-              child: Icon(
+              child: const Icon(
                 Icons.arrow_back_ios_outlined,
                 color: Colors.black45,
               ),
@@ -153,7 +152,7 @@ class _AddTodoState extends State<AddTodo> {
             actions: [
               TextButton(
                 onPressed: handleAddNote,
-                child: Icon(
+                child: const Icon(
                   Icons.done_outlined,
                   color: Colors.black45,
                   size: 30,
@@ -176,7 +175,7 @@ class _AddTodoState extends State<AddTodo> {
             );
           }),
           body: isLoading
-              ? Center(
+              ? const Center(
                   child: CircularProgressIndicator(),
                 )
               : SingleChildScrollView(
@@ -213,12 +212,12 @@ class _AddTodoState extends State<AddTodo> {
                             child: dateTime != null
                                 ? Row(
                                     children: [
-                                      Icon(Icons.alarm,
+                                      const Icon(Icons.alarm,
                                           color: Colors.blue, size: 18),
-                                      SizedBox(width: 5),
+                                      const SizedBox(width: 5),
                                       Text(
                                         getFormattedDataTime(dateTime!),
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           fontSize: 14.0,
                                           fontFamily: "lato",
                                           color: Colors.grey,
@@ -235,10 +234,10 @@ class _AddTodoState extends State<AddTodo> {
                             padding: const EdgeInsets.only(top: 6.0),
                             child: TextFormField(
                               controller: _descC,
-                              decoration: InputDecoration.collapsed(
+                              decoration: const InputDecoration.collapsed(
                                 hintText: "Note Description",
                               ),
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 18.0,
                                 fontFamily: "lato",
                                 // color: Colors.grey,

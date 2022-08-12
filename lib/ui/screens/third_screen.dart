@@ -12,7 +12,7 @@ class ThirdScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('payload ${payload}'),
+            Text('payload $payload'),
           ],
         ),
       ),

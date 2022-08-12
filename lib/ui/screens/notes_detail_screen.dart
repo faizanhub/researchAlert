@@ -117,14 +117,14 @@ class _NotesDetailScreenState extends State<NotesDetailScreen> {
 
         toggleLoading(false);
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Note Updated Successfully'),
+          const SnackBar(
+            content: const Text('Note Updated Successfully'),
           ),
         );
 
         Navigator.pushAndRemoveUntil(
             context,
-            MaterialPageRoute(builder: (context) => HomeScreen()),
+            MaterialPageRoute(builder: (context) => const HomeScreen()),
             (route) => false);
       } else {
         showAlertDialog(context, 'Error', 'Please Input all field');
@@ -137,7 +137,7 @@ class _NotesDetailScreenState extends State<NotesDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    const textStyleBold = const TextStyle(fontWeight: FontWeight.bold);
+    const textStyleBold = TextStyle(fontWeight: FontWeight.bold);
     var width = MediaQuery.of(context).size.width / 2;
 
     return MaterialApp(
@@ -153,7 +153,7 @@ class _NotesDetailScreenState extends State<NotesDetailScreen> {
               onTap: () {
                 Navigator.pop(context);
               },
-              child: Icon(
+              child: const Icon(
                 Icons.arrow_back_ios_outlined,
                 color: Colors.black45,
               ),
@@ -165,7 +165,7 @@ class _NotesDetailScreenState extends State<NotesDetailScreen> {
             actions: [
               TextButton(
                 onPressed: updateNotes,
-                child: Icon(
+                child: const Icon(
                   Icons.done_outlined,
                   color: Colors.black45,
                   size: 30,
@@ -188,7 +188,7 @@ class _NotesDetailScreenState extends State<NotesDetailScreen> {
             );
           }),
           body: isLoading
-              ? Center(
+              ? const Center(
                   child: CircularProgressIndicator(),
                 )
               : SingleChildScrollView(
@@ -225,12 +225,12 @@ class _NotesDetailScreenState extends State<NotesDetailScreen> {
                             child: dateTime != null
                                 ? Row(
                                     children: [
-                                      Icon(Icons.alarm,
+                                      const Icon(Icons.alarm,
                                           color: Colors.blue, size: 18),
-                                      SizedBox(width: 5),
+                                      const SizedBox(width: 5),
                                       Text(
                                         getFormattedDataTime(dateTime!),
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           fontSize: 14.0,
                                           fontFamily: "lato",
                                           color: Colors.grey,
@@ -238,7 +238,7 @@ class _NotesDetailScreenState extends State<NotesDetailScreen> {
                                       ),
                                     ],
                                   )
-                                : Text(''),
+                                : const Text(''),
                           ),
 
                           //
@@ -247,10 +247,10 @@ class _NotesDetailScreenState extends State<NotesDetailScreen> {
                             padding: const EdgeInsets.only(top: 6.0),
                             child: TextFormField(
                               controller: _descC,
-                              decoration: InputDecoration.collapsed(
+                              decoration: const InputDecoration.collapsed(
                                 hintText: "Note Description",
                               ),
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 18.0,
                                 fontFamily: "lato",
                                 // color: Colors.grey,

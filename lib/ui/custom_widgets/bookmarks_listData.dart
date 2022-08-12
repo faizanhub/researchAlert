@@ -18,21 +18,22 @@ class BookMarksListData extends StatelessWidget {
           context: context,
           builder: (ctx) {
             return AlertDialog(
-              title: Text('Delete'),
-              content: Text('Do you want to delete this note?'),
+              title: const Text('Delete'),
+              content: const Text('Do you want to delete this note?'),
               actions: [
                 TextButton(
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child: Text('Cancel', style: TextStyle(color: Colors.red)),
+                  child:
+                      const Text('Cancel', style: TextStyle(color: Colors.red)),
                 ),
                 TextButton(
                   onPressed: () {
                     DataBaseServices().deleteNote(ref);
                     Navigator.pop(context);
                   },
-                  child: Text('Ok'),
+                  child: const Text('Ok'),
                 ),
               ],
             );
@@ -52,7 +53,7 @@ class BookMarksListData extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SizedBox(height: MediaQuery.of(context).size.height / 3.5),
-              Center(child: CircularProgressIndicator()),
+              const Center(child: CircularProgressIndicator()),
             ],
           );
         } else if (snapshot.hasData && snapshot.data!.docs.isEmpty) {
@@ -60,7 +61,7 @@ class BookMarksListData extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SizedBox(height: MediaQuery.of(context).size.height / 3.5),
-              Text('No Notes '),
+              const Text('No Notes '),
             ],
           );
         }
@@ -70,11 +71,11 @@ class BookMarksListData extends StatelessWidget {
         List<QueryDocumentSnapshot> notes = snapshot.data!.docs;
         List<Notes> notesList = [];
 
-        notes.forEach((note) {
+        for (var note in notes) {
           var notesMap = note.data() as Map<String, dynamic>;
 
           notesList.add(Notes.fromJson(notesMap));
-        });
+        }
 
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10.0),

@@ -28,7 +28,7 @@ class _BookmarksHomeScreenState extends State<BookmarksHomeScreen> {
       body: SafeArea(
         child: ListView(
           children: [
-            CustomAppBar(),
+            const CustomAppBar(),
             //Title
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -42,7 +42,7 @@ class _BookmarksHomeScreenState extends State<BookmarksHomeScreen> {
                 ],
               ),
             ),
-            BookMarksListData(),
+            const BookMarksListData(),
             // ShowDataPage(),
           ],
         ),

@@ -93,7 +93,7 @@ class _HomeScreenState extends State<HomeScreen> {
       }),
       body: SafeArea(
         child: ListView(
-          children: [
+          children: const [
             CustomAppBar(),
             // SearchBar(),
             ListButtonContainer(),

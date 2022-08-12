@@ -12,7 +12,7 @@ class MyRegister extends StatefulWidget {
 }
 
 class _MyRegisterState extends State<MyRegister> {
-  AuthService _authService = AuthService();
+  final AuthService _authService = AuthService();
 
   TextEditingController emailC = TextEditingController();
 
