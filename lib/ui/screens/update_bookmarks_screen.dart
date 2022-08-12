@@ -7,17 +7,16 @@ import 'package:research_alert/core/models/notes_model.dart';
 import 'package:research_alert/core/services/database_services.dart';
 import 'package:research_alert/core/services/notification_service.dart';
 import 'package:research_alert/core/utils/alert_dialog.dart';
-import 'package:research_alert/ui/custom_widgets/custom_bottom_bar_notes.dart';
 import 'package:research_alert/ui/screens/home_screen.dart';
-import 'package:research_alert/ui/screens/third_screen.dart';
-import 'package:url_launcher/link.dart';
+
 import 'package:url_launcher/url_launcher.dart';
 
 class UpdateBookmarkScreen extends StatefulWidget {
   Notes notes;
   DocumentReference ref;
 
-  UpdateBookmarkScreen({required this.notes, required this.ref});
+  UpdateBookmarkScreen({Key? key, required this.notes, required this.ref})
+      : super(key: key);
 
   @override
   State<UpdateBookmarkScreen> createState() => _UpdateBookmarkScreenState();
@@ -120,14 +119,14 @@ class _UpdateBookmarkScreenState extends State<UpdateBookmarkScreen> {
 
         toggleLoading(false);
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+          const SnackBar(
             content: Text('Bookmark Updated Successfully'),
           ),
         );
 
         Navigator.pushAndRemoveUntil(
             context,
-            MaterialPageRoute(builder: (context) => HomeScreen()),
+            MaterialPageRoute(builder: (context) => const HomeScreen()),
             (route) => false);
       } else {
         showAlertDialog(context, 'Error', 'Please Input all field');
@@ -140,7 +139,7 @@ class _UpdateBookmarkScreenState extends State<UpdateBookmarkScreen> {
 
   @override
   Widget build(BuildContext context) {
-    const textStyleBold = const TextStyle(fontWeight: FontWeight.bold);
+    const textStyleBold = TextStyle(fontWeight: FontWeight.bold);
     var width = MediaQuery.of(context).size.width / 2;
 
     return MaterialApp(
@@ -156,7 +155,7 @@ class _UpdateBookmarkScreenState extends State<UpdateBookmarkScreen> {
               onTap: () {
                 Navigator.pop(context);
               },
-              child: Icon(
+              child: const Icon(
                 Icons.arrow_back_ios_outlined,
                 color: Colors.black45,
               ),
@@ -191,7 +190,7 @@ class _UpdateBookmarkScreenState extends State<UpdateBookmarkScreen> {
           //   );
           // }),
           body: isLoading
-              ? Center(
+              ? const Center(
                   child: CircularProgressIndicator(),
                 )
               : SingleChildScrollView(
@@ -228,12 +227,12 @@ class _UpdateBookmarkScreenState extends State<UpdateBookmarkScreen> {
                             child: dateTime != null
                                 ? Row(
                                     children: [
-                                      Icon(Icons.alarm,
+                                      const Icon(Icons.alarm,
                                           color: Colors.blue, size: 18),
-                                      SizedBox(width: 5),
+                                      const SizedBox(width: 5),
                                       Text(
                                         getFormattedDataTime(dateTime!),
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           fontSize: 14.0,
                                           fontFamily: "lato",
                                           color: Colors.grey,
@@ -241,7 +240,7 @@ class _UpdateBookmarkScreenState extends State<UpdateBookmarkScreen> {
                                       ),
                                     ],
                                   )
-                                : Text(''),
+                                : const Text(''),
                           ),
 
                           Container(
@@ -254,10 +253,10 @@ class _UpdateBookmarkScreenState extends State<UpdateBookmarkScreen> {
                                   print('Could not launch $link');
                                 }
                               },
-                              text: '${_descC.text}',
-                              style:
-                                  TextStyle(color: Colors.black, fontSize: 18),
-                              linkStyle: TextStyle(color: Colors.blue),
+                              text: _descC.text,
+                              style: const TextStyle(
+                                  color: Colors.black, fontSize: 18),
+                              linkStyle: const TextStyle(color: Colors.blue),
                             ),
                           ),
 

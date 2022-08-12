@@ -11,10 +11,10 @@ class NotificationService {
 
   static Future init() async {
     tz.initializeTimeZones();
-    final android = AndroidInitializationSettings('@mipmap/ic_launcher');
-    final ios = IOSInitializationSettings();
+    const android = AndroidInitializationSettings('@mipmap/ic_launcher');
+    const ios = IOSInitializationSettings();
 
-    final settings = InitializationSettings(
+    const settings = InitializationSettings(
       android: android,
       iOS: ios,
     );
@@ -27,7 +27,7 @@ class NotificationService {
   }
 
   Future<NotificationDetails> _notificationDetails() async {
-    return NotificationDetails(
+    return const NotificationDetails(
       android: AndroidNotificationDetails(
         'channel id',
         'channel name',

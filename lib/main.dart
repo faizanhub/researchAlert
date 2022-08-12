@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
         primaryColor: Colors.deepPurple,
         fontFamily: 'roboto-regular',
       ),
-      home: Splash(),
+      home: const Splash(),
     );
   }
 }

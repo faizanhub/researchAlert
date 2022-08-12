@@ -33,14 +33,14 @@ class CustomBottomBar extends StatelessWidget {
                     context: context,
                     builder: (ctx) {
                       return AlertDialog(
-                        title: Text('Logout'),
-                        content: Text('Do you want to Logout?'),
+                        title: const Text('Logout'),
+                        content: const Text('Do you want to Logout?'),
                         actions: [
                           TextButton(
                             onPressed: () {
                               Navigator.pop(context);
                             },
-                            child: Text('Cancel',
+                            child: const Text('Cancel',
                                 style: TextStyle(color: Colors.red)),
                           ),
                           TextButton(
@@ -53,7 +53,7 @@ class CustomBottomBar extends StatelessWidget {
                                 (route) => false,
                               );
                             },
-                            child: Text('Ok'),
+                            child: const Text('Ok'),
                           ),
                         ],
                       );
